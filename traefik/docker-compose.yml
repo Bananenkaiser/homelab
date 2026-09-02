@@ -10,9 +10,6 @@ services:
       - "--entrypoints.web.address=:80"
       # Dashboard unter http://traefik.lan (nur im LAN, ohne Auth)
       - "--api.dashboard=true"
-    environment:
-      # Docker 29 lehnt die alte Default-API-Version des Traefik-Clients ab.
-      - DOCKER_API_VERSION=1.44
     ports:
       - "80:80"
     volumes:
