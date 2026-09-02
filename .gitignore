@@ -1,0 +1,6 @@
+# Daten gehören nach /srv/appdata/, niemals ins Repo
+*.zim
+*.db
+*.sqlite*
+.env
+appdata/

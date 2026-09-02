@@ -1,0 +1,25 @@
+# Vorlage für eine neue fertige App.
+#
+# 1. Ordner kopieren:   cp -r TEMPLATE meinedienst
+# 2. Überall __NAME__ ersetzen durch  meinedienst  (= Ordnername = Subdomain)
+# 3. image + Port anpassen
+# 4. docker compose up -d   ->   http://meinedienst.lan
+
+services:
+  app:
+    image: CHANGEME:latest
+    container_name: __NAME__
+    restart: unless-stopped
+    # Persistente Daten immer nach /srv/appdata/<name>/ (nicht ins Repo!):
+    # volumes:
+    #   - /srv/appdata/__NAME__:/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.__NAME__.rule=Host(`__NAME__.lan`)"
+      - "traefik.http.services.__NAME__.loadbalancer.server.port=80"   # Port IM Container
+    networks:
+      - traefik-net
+
+networks:
+  traefik-net:
+    external: true

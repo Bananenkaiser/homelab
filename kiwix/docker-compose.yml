@@ -1,0 +1,20 @@
+services:
+  kiwix:
+    image: ghcr.io/kiwix/kiwix-tools:3.7.0
+    container_name: kiwix
+    restart: unless-stopped
+    # Serviert alle .zim-Dateien aus /data. Neue Inhalte: einfach .zim dorthin legen
+    # und Container neu starten (docker compose restart kiwix).
+    command: kiwix-serve --port 8080 --nolibrarybutton /data/*.zim
+    volumes:
+      - /srv/appdata/kiwix:/data:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.wiki.rule=Host(`wiki.lan`)"
+      - "traefik.http.services.wiki.loadbalancer.server.port=8080"
+    networks:
+      - traefik-net
+
+networks:
+  traefik-net:
+    external: true
