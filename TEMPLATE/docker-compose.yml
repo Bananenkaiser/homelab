@@ -10,9 +10,9 @@ services:
     image: CHANGEME:latest
     container_name: __NAME__
     restart: unless-stopped
-    # Persistente Daten immer nach /srv/appdata/<name>/ (nicht ins Repo!):
+    # Persistente Daten immer auf die HDD, nie ins Repo:
     # volumes:
-    #   - /srv/appdata/__NAME__:/data
+    #   - ${APPDATA:?setze APPDATA in ~/homelab/.env}/__NAME__:/data
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.__NAME__.rule=Host(`__NAME__.lan`)"

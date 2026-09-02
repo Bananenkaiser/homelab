@@ -7,7 +7,7 @@ services:
     # und Container neu starten (docker compose restart kiwix).
     command: kiwix-serve --port 8080 --nolibrarybutton /data/*.zim
     volumes:
-      - /srv/appdata/kiwix:/data:ro
+      - ${APPDATA:?setze APPDATA in ../.env}/kiwix:/data:ro
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.wiki.rule=Host(`wiki.lan`)"

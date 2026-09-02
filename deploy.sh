@@ -8,16 +8,21 @@ set -euo pipefail
 
 cd "$(dirname "$0")"
 
+if [ ! -f .env ]; then
+  echo "FEHLER: .env fehlt. Anlegen mit:  cp .env.example .env  und APPDATA setzen." >&2
+  exit 1
+fi
+set -a; . ./.env; set +a          # APPDATA für die compose-Interpolation
+
 git pull --ff-only
 
-# Gemeinsames Netz sicherstellen
 docker network inspect traefik-net >/dev/null 2>&1 || docker network create traefik-net
 
 up() {
   local dir="$1"
   [ -f "$dir/docker-compose.yml" ] || return 0
   echo ">> $dir"
-  docker compose -f "$dir/docker-compose.yml" up -d
+  docker compose --env-file .env -f "$dir/docker-compose.yml" up -d
 }
 
 if [ $# -gt 0 ]; then
@@ -25,7 +30,6 @@ if [ $# -gt 0 ]; then
   exit 0
 fi
 
-# Traefik immer zuerst, dann der Rest (TEMPLATE überspringen)
 up traefik
 for d in */; do
   d="${d%/}"
