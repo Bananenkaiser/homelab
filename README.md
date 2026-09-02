@@ -8,6 +8,13 @@ der Adresse.
 
 - OpenMediaVault, Docker 29, Docker-Daten liegen bereits auf der HDD
   (`Docker Root Dir = $DISK/docker`).
+- **Docker 29 hat alte API-Versionen entfernt; Traefik spricht 1.24.** Fix:
+  `/etc/systemd/system/docker.service.d/min-api.conf` mit
+  `Environment=DOCKER_MIN_API_VERSION=1.24`. Ohne das sieht Traefik keine Container.
+- **Pi-hole belegte Port 80.** Admin-Oberfläche jetzt auf
+  `http://192.168.178.52:8081/admin` (`webserver.port` in `/etc/pihole/pihole.toml`).
+- **Wildcard-DNS:** `etc_dnsmasq_d = true` in `pihole.toml`,
+  `/etc/dnsmasq.d/02-lan.conf` = `address=/lan/192.168.178.52`. Jede `*.lan` → Pi.
 - 2-TB-btrfs-Platte gemountet unter
   `$DISK = /srv/dev-disk-by-uuid-672d33ef-9522-48ce-a5ea-711cb8119569`
   (~677 GB frei). SD-Karte nur 15 GB – **alle Daten auf die HDD**.
@@ -60,8 +67,8 @@ docker network inspect traefik-net >/dev/null 2>&1 || docker network create trae
 ./deploy.sh                                 # Traefik + alle Stacks hoch
 ```
 
-**Pi-hole:** Local DNS → eine Wildcard `*.lan` → `192.168.178.52`.
-Danach löst jede neue `*.lan`-Adresse automatisch auf – kein weiterer Eintrag nötig.
+**Pi-hole-Wildcard** ist schon eingerichtet (siehe „Der Pi" oben) – jede neue
+`*.lan`-Adresse löst automatisch auf, kein weiterer Eintrag nötig.
 
 ## Alltag
 
@@ -96,8 +103,8 @@ Eigenes Repo anlegen, `docker-compose.yml` nach dem Muster in `TEMPLATE/`
 
 ## Aktive Seiten
 
-| Adresse | Stack | Zweck |
+| Adresse | Stack | Status |
 |---|---|---|
-| `traefik.lan` | `homelab/traefik` | Reverse-Proxy-Dashboard |
-| `wiki.lan` | `homelab/kiwix` | offline-Wikipedia (`.zim`) |
-| `tippspiel.lan` | `bundesliga-web` | Bundesliga-Tipps |
+| `traefik.lan` | `homelab/traefik` | **läuft** (v3.5) |
+| `wiki.lan` | `homelab/kiwix` | noch nicht deployed (braucht `.zim` in `$APPDATA/kiwix`) |
+| `tippspiel.lan` | `bundesliga-web` | noch nicht deployed (App wird noch gebaut) |
