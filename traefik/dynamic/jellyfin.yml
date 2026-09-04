@@ -1,0 +1,14 @@
+# Jellyfin laeuft auf dem Synology-NAS (Cloud_9, 192.168.178.59:8096),
+# nicht als Docker-Container. Traefik proxyt jelly.lan per File-Provider dorthin.
+http:
+  routers:
+    jellyfin:
+      rule: "Host(`jelly.lan`)"
+      entryPoints:
+        - web
+      service: jellyfin
+  services:
+    jellyfin:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.178.59:8096"

@@ -106,5 +106,6 @@ Eigenes Repo anlegen, `docker-compose.yml` nach dem Muster in `TEMPLATE/`
 | Adresse | Stack | Status |
 |---|---|---|
 | `traefik.lan` | `homelab/traefik` | **läuft** (v3.5) |
+| `jelly.lan` | `homelab/traefik/dynamic/jellyfin.yml` → NAS `192.168.178.59:8096` | Jellyfin auf dem NAS, per File-Provider geproxyt |
 | `wiki.lan` | `homelab/kiwix` | noch nicht deployed (braucht `.zim` in `$APPDATA/kiwix`) |
 | `tippspiel.lan` | `bundesliga-web` | noch nicht deployed (App wird noch gebaut) |

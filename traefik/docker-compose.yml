@@ -10,10 +10,14 @@ services:
       - "--entrypoints.web.address=:80"
       # Dashboard unter http://traefik.lan (nur im LAN, ohne Auth)
       - "--api.dashboard=true"
+      # File-Provider fuer Ziele ausserhalb von Docker (z.B. NAS-Dienste)
+      - "--providers.file.directory=/etc/traefik/dynamic"
+      - "--providers.file.watch=true"
     ports:
       - "80:80"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./dynamic:/etc/traefik/dynamic:ro"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.rule=Host(`traefik.lan`)"
